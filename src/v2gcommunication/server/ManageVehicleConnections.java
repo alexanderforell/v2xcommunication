@@ -15,9 +15,10 @@ import java.util.ArrayList;
 public class ManageVehicleConnections implements ConnectionList{
     ArrayList<VehicleConnection> vehicleConnection = new ArrayList<>();
     
-    @Override public void newConnection(Socket socket){
-        this.vehicleConnection.add(new VehicleConnection(socket));
+    @Override public void newConnection(Socket socket, EventEvaluation listener){
+        this.vehicleConnection.add(new VehicleConnection(socket, listener));
         vehicleConnection.get(vehicleConnection.size()-1).start();
     }
+    
     
 }

@@ -28,9 +28,10 @@ public class Server {
         ManageVehicleConnections manageVehicleConnections = new ManageVehicleConnections();
         ManageUserConnections manageUserConnections = new ManageUserConnections();
         DatabaseConnection databaseConnection = new DatabaseConnection(config.databaseServer(),config.databasePort(),config.databaseScheme(),config.databaseUserName(),config.databasePassword());
-        ListenOnServerSocket vehicle = new ListenOnServerSocket(config.getPortVehicleCommunication(),manageVehicleConnections);
+        EventEvaluation manageServer = new EventEvaluation(manageVehicleConnections, manageUserConnections, databaseConnection);
+        ListenOnServerSocket vehicle = new ListenOnServerSocket(config.getPortVehicleCommunication(),manageVehicleConnections, manageServer);
         vehicle.start();
-        ListenOnServerSocket user = new ListenOnServerSocket(config.getPortUserCommunication(),manageVehicleConnections);
+        ListenOnServerSocket user = new ListenOnServerSocket(config.getPortUserCommunication(),manageUserConnections, manageServer);
         user.start();
         //vehicle.close();
         //user.close();

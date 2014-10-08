@@ -17,9 +17,11 @@ public class ListenOnServerSocket extends Thread {
     private final ConnectionList conn;
     private ServerSocket serverSocket;
     private boolean listening = true;
-    ListenOnServerSocket(int portNumber,ConnectionList conn ){
+    private final EventEvaluation listener;
+    ListenOnServerSocket(int portNumber,ConnectionList conn, EventEvaluation listener ){
         super("ListenOnServerSocket");
         this.conn=conn;
+        this.listener=listener;
         try {
             serverSocket = new ServerSocket(portNumber);
         }
@@ -31,7 +33,7 @@ public class ListenOnServerSocket extends Thread {
     @Override public void run() {
         while (listening){
             try {
-                conn.newConnection(serverSocket.accept());
+                conn.newConnection(serverSocket.accept(),listener);
             } catch (IOException ex) {
                 Logger.getLogger(ListenOnServerSocket.class.getName()).log(Level.SEVERE, null, ex);
             }

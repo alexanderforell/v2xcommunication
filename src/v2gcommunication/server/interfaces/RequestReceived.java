@@ -4,14 +4,13 @@
  * and open the template in the editor.
  */
 package v2gcommunication.server.interfaces;
-import v2gcommunication.server.EventEvaluation;
-import java.net.*;
+
+import javax.json.JsonObject;
+
 /**
  *
  * @author alexander
  */
-public interface ConnectionList {
-    
-    void newConnection(Socket socket, EventEvaluation listener);
-       
+public interface RequestReceived {
+    public void requestReceived(String UserName, JsonObject jsonObject);
 }

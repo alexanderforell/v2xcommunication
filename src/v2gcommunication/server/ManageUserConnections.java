@@ -15,8 +15,9 @@ import java.util.ArrayList;
 public class ManageUserConnections implements ConnectionList{
      ArrayList<UserConnection> userConnection = new ArrayList<>();
     
-    @Override public void newConnection(Socket socket){
-        this.userConnection.add(new UserConnection(socket) ) ;
+    @Override public void newConnection(Socket socket,EventEvaluation listener){
+        this.userConnection.add(new UserConnection(socket,listener)) ;
+        userConnection.get(userConnection.size()-1).start();
     }
     
 }
