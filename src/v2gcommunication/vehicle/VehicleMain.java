@@ -20,11 +20,12 @@ public class VehicleMain{
         int i = 0;
         conn.start();
         while (true){
-            try {
-                Thread.sleep(1000);
+           /*try {
+                Thread.sleep(1);
             } catch (InterruptedException ex) {
                 Logger.getLogger(VehicleMain.class.getName()).log(Level.SEVERE, null, ex);
             }
+                   */
             Double[] speed = new Double[1];
             speed[0] = vehicle1.getSpeed();
             Long[] code = new Long[1];

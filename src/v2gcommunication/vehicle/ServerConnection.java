@@ -59,9 +59,18 @@ public class ServerConnection extends Thread{
         message.add("Data-Points",dataCodes);
         message.add("Data-Values",dataValues);
         transmit = message.build();
+         for (JsonValue dataCode:transmit.getJsonArray("Data-Points")){
+            System.out.println(dataCode);
+            
+        }
+        for (JsonValue dataValue:transmit.getJsonArray("Data-Values")){
+            System.out.println(dataValue);
+            
+        } 
         try {
             JsonWriter out = Json.createWriter(socket.getOutputStream());
             out.writeObject(transmit);
+            
         } catch (IOException ex) {
             Logger.getLogger(ServerConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
