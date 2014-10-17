@@ -9,7 +9,7 @@ import javax.json.*;
  *
  * @author alexander
  */
-public interface DataReceived {
-        public void dataReceived(String fin, JsonObject jsonObject);
+public interface VehicleDataReceived {
+        public void vehicleDataReceived(String fin, JsonObject jsonObject);
         
 }

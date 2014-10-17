@@ -4,14 +4,13 @@
  * and open the template in the editor.
  */
 package v2gcommunication.server;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import v2gcommunication.server.interfaces.DataReceived;
+import v2gcommunication.server.interfaces.VehicleDataReceived;
 import javax.json.*;
 /**
  *
@@ -20,7 +19,7 @@ import javax.json.*;
 public class VehicleConnection extends Thread {
     private Socket socket = null;
     private final String fin;
-    List <DataReceived> listener;
+    List <VehicleDataReceived> listener;
      
     public VehicleConnection(Socket socket, EventEvaluation listener) {
         super("VehicleConnection");
@@ -32,19 +31,24 @@ public class VehicleConnection extends Thread {
         
     }
     @Override public void run() {
-         try {
+        try {
+            while (true){
             JsonReader in = Json.createReader(
                     new InputStreamReader(socket.getInputStream()));
             JsonObject data;
-             while ((data = in.readObject()) != null) {
-                for (DataReceived li1:listener) li1.dataReceived(fin, data);
-             }
+            //while ((data = in.readObject()) != null) {
+            data = in.readObject();
+            for (VehicleDataReceived li1:listener) {
+                System.out.println("I was here!");
+                li1.vehicleDataReceived(fin, data);
+                }
+            }
         } catch (IOException ex) {
             Logger.getLogger(UserConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
-    public void addListener(DataReceived dataReceived){
+    public void addListener(VehicleDataReceived dataReceived){
         listener.add(dataReceived);
     }
     
