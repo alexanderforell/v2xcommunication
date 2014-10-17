@@ -6,6 +6,8 @@
 package v2gcommunication.server;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.BufferedReader;
+import java.io.StringReader;
 import java.net.*;
 import java.util.*;
 import java.util.logging.Level;
@@ -32,6 +34,28 @@ public class VehicleConnection extends Thread {
     }
     @Override public void run() {
         try {
+            BufferedReader in =
+                new BufferedReader(
+                    new InputStreamReader(socket.getInputStream()));
+            StringBuilder response= new StringBuilder();
+            while (true){
+                char test = (char)in.read();
+                if (test == '}'){
+                    response.append(test); 
+                     JsonReader jsonReader = Json.createReader( new StringReader(response.toString()));
+                     JsonObject data = jsonReader.readObject();
+                     for (VehicleDataReceived li1:listener) {
+                        System.out.println(fin);
+                        li1.vehicleDataReceived(fin, data);
+                    }
+                    response = new StringBuilder();
+                }
+                else {
+                    response.append(test);
+                }
+                
+            }
+            /*
             while (true){
             JsonReader in = Json.createReader(
                     new InputStreamReader(socket.getInputStream()));
@@ -39,10 +63,11 @@ public class VehicleConnection extends Thread {
             //while ((data = in.readObject()) != null) {
             data = in.readObject();
             for (VehicleDataReceived li1:listener) {
-                System.out.println("I was here!");
+                System.out.println(f);
                 li1.vehicleDataReceived(fin, data);
                 }
             }
+                    */
         } catch (IOException ex) {
             Logger.getLogger(UserConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
