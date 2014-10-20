@@ -8,6 +8,7 @@ package v2gcommunication.vehicle;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,11 +22,13 @@ import javax.json.*;
  * @author alexander
  */
 public class ServerConnection extends Thread{
-    Socket socket; 
+    Socket socket;
+    PrintWriter out;
      List <DataReceived> listener;
     ServerConnection(EventEvaluation listener){
         try {
             socket = new Socket("localhost",25001);
+            out = new PrintWriter(socket.getOutputStream(), true);
         }
         catch (Exception e){
             System.out.println("Couldn't connect to server");
@@ -59,22 +62,8 @@ public class ServerConnection extends Thread{
         message.add("Data-Points",dataCodes);
         message.add("Data-Values",dataValues);
         transmit = message.build();
-         for (JsonValue dataCode:transmit.getJsonArray("Data-Points")){
-            System.out.println(dataCode);
-            
-        }
-        for (JsonValue dataValue:transmit.getJsonArray("Data-Values")){
-            System.out.println(dataValue);
-            
-        } 
-        try {
-            JsonWriter out = Json.createWriter(socket.getOutputStream());
-            out.writeObject(transmit);
-            
-        } catch (IOException ex) {
-            Logger.getLogger(ServerConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
+        out.println(transmit.toString());
     }
     
 }   
