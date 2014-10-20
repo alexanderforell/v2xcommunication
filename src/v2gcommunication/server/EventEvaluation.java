@@ -8,12 +8,12 @@ import javax.json.JsonValue;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import v2gcommunication.server.interfaces.VehicleDataReceived;
-import v2gcommunication.server.interfaces.RequestReceived;
+import v2gcommunication.server.interfaces.ClientRequestReceived;
 /**
  *
  * @author alexander
  */
-public class EventEvaluation implements VehicleDataReceived, RequestReceived {
+public class EventEvaluation implements VehicleDataReceived, ClientRequestReceived {
     ManageVehicleConnections manageVehicleConnections;
     ManageUserConnections manageUserConnections;
     DatabaseConnection conn;
@@ -32,8 +32,64 @@ public class EventEvaluation implements VehicleDataReceived, RequestReceived {
         }
             
     }
-    @Override public void requestReceived(String fin, JsonObject jsonObject){
-        
+    @Override public void requestReceived(String sessionID, JsonObject jsonObject){
+        switch (jsonObject.getString("functionName")) {
+            case "transmitData":
+                
+                break;
+            case "logon":
+                
+                break;
+            case "createUser":
+                {String userName;
+                String password;
+                userName = jsonObject.getString("userName");
+                password = jsonObject.getString("password");
+                conn.createUser(userName, password);}
+                break;
+            case "changePassword":
+                
+                break;
+            case "deleteUser":
+                {String userName;
+                userName = jsonObject.getString("userName");
+                
+                conn.deleteUser(userName);}
+                break;
+            case "logoff":
+                
+                break;
+            case "getUserRights":
+                
+                break;
+            case "addVehicle":
+                
+                break;
+            case "deleteVehicle":
+                
+                break;
+            case "getVehicles":
+                
+                break;
+            case "getActiveVehicles":
+                
+                break;
+            case "readData":
+                
+                break;
+            case "getSessions":
+                
+                break;
+            case "requestData":
+                
+                break;
+            case "schduleDataRequest":
+                
+                break;
+            default:
+                break;
+            
+        }
     }
     
     private void dataReceived(String fin, JsonObject jsonObject){

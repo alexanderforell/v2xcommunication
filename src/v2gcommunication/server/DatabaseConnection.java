@@ -56,4 +56,29 @@ public class DatabaseConnection {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void createUser(String userName, String password){
+         String query = "insert into users (username, password)"
+        + " values (?, ?)";
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            preparedStmt.setString(1, userName);
+            preparedStmt.setString(2, password);
+            preparedStmt.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    public void deleteUser(String userName){
+         String query = "delete from users where username =?";
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            preparedStmt.setString(1, userName);
+            preparedStmt.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 }

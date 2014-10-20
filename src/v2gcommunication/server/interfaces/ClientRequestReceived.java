@@ -11,6 +11,6 @@ import javax.json.JsonObject;
  *
  * @author alexander
  */
-public interface RequestReceived {
-    public void requestReceived(String UserName, JsonObject jsonObject);
+public interface ClientRequestReceived {
+    public void requestReceived(String sessionID, JsonObject jsonObject);
 }

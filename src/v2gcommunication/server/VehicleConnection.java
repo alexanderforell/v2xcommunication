@@ -37,37 +37,15 @@ public class VehicleConnection extends Thread {
             BufferedReader in =
                 new BufferedReader(
                     new InputStreamReader(socket.getInputStream()));
-            StringBuilder response= new StringBuilder();
-            while (true){
-                char test = (char)in.read();
-                if (test == '}'){
-                    response.append(test); 
-                     JsonReader jsonReader = Json.createReader( new StringReader(response.toString()));
-                     JsonObject data = jsonReader.readObject();
-                     for (VehicleDataReceived li1:listener) {
-                        System.out.println(fin);
-                        li1.vehicleDataReceived(fin, data);
-                    }
-                    response = new StringBuilder();
-                }
-                else {
-                    response.append(test);
-                }
-                
+            String strData;
+            while ((strData = in.readLine())!=null){ 
+                JsonReader jsonReader = Json.createReader( new StringReader(strData));
+                JsonObject jsonData = jsonReader.readObject();
+                for (VehicleDataReceived li1:listener) {
+                   System.out.println(jsonData.toString());
+                   li1.vehicleDataReceived(fin, jsonData);
+               }
             }
-            /*
-            while (true){
-            JsonReader in = Json.createReader(
-                    new InputStreamReader(socket.getInputStream()));
-            JsonObject data;
-            //while ((data = in.readObject()) != null) {
-            data = in.readObject();
-            for (VehicleDataReceived li1:listener) {
-                System.out.println(f);
-                li1.vehicleDataReceived(fin, data);
-                }
-            }
-                    */
         } catch (IOException ex) {
             Logger.getLogger(UserConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
