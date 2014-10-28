@@ -19,7 +19,7 @@ public class VehicleMain{
         ServerConnection conn = new ServerConnection(eventEval);
         int i = 0;
         conn.start();
-        while (true){
+        while (i<50000){
            /*try {
                 Thread.sleep(1);
             } catch (InterruptedException ex) {
@@ -31,8 +31,9 @@ public class VehicleMain{
             Long[] code = new Long[1];
             code[0] = (long)i;
             conn.transmitData(code, speed);
-            System.out.println("Data transmitted " + i);
             i++;
         }
+        conn.close();
+        vehicle1.destroy();
     }
 }
