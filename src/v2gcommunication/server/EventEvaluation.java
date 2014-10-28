@@ -10,14 +10,48 @@ import javax.json.JsonObject;
 import v2gcommunication.server.interfaces.VehicleDataReceived;
 import v2gcommunication.server.interfaces.ClientRequestReceived;
 /**
- *
- * @author alexander
+ * The {@code EventEvaluation} class evaluates thrown by 
+ * {@code ManageVehicleConnections} and  {@code ManageUserConnections}. It
+ * implemtents the interface {@code VehicleDataReceived} and 
+ * {@code ClientRequestReceived} in order to do so.
+ * 
+ * <p> The class holds fields for the classes  {@code ManageVehicleConnections},
+ * {@code ManageUserConnections} and {@code DatabaseConnection}
+ * 
+ * @see VehicleDataReceived
+ * @see ClientRequestReceived
+ * @see DatabaseConnection
+ * @see ManageVehicleConnections
+ * @see ManageUserConnections
+ * @see DatabaseConnection
+ * @author Alexander Forell
  */
 public class EventEvaluation implements VehicleDataReceived, ClientRequestReceived {
+    /**
+    * Field which holds the ManageVehicleConnections object
+    */
     ManageVehicleConnections manageVehicleConnections;
+    /**
+    * Field which holds the ManageUserConnections object
+    */
     ManageUserConnections manageUserConnections;
+    /**
+    * Field which holds the DatabaseConnection object
+    */
     DatabaseConnection conn;
     
+    
+    /**
+    * Constructor initializeses the fields {@code manageVehicleConnections},
+    * {@code manageUserConnections} and {@code conn}.
+    * 
+    * @param manageVehicleConnections   {@code ManageVehicleConnections} Object 
+    * which holds all active vehicle connections
+    * @param manageUserConnections      {@code ManageVehicleConnections} Object
+    * which holds all active client/user connections 
+    * @param conn                       {@code DatabaseConnection} Object which 
+    * holds the database connection and wrapper methods for database access 
+    */
     EventEvaluation(ManageVehicleConnections manageVehicleConnections, ManageUserConnections manageUserConnections, DatabaseConnection conn){
         this.manageUserConnections =  manageUserConnections;
         this.manageVehicleConnections = manageVehicleConnections;
@@ -25,13 +59,33 @@ public class EventEvaluation implements VehicleDataReceived, ClientRequestReceiv
         
     }
     
-    @Override public void vehicleDataReceived(String fin, JsonObject jsonObject){
+    /**
+    * Overrides {@code vehicleDataReceived} of {@code VehicleDataReceived} 
+    * interface.
+    * 
+    * It evaluates the Function-Name field in the JsonObject and calls the 
+    * respective methods to process the information.
+    * @param vin        a string holding the vin of the vehicle which send the 
+    * jsonObject
+    * @param jsonObject a JsonObject with the message
+    */
+    @Override public void vehicleDataReceived(String vin, JsonObject jsonObject){
         switch (jsonObject.getString("Function-Name")) {
             case "transmitData":
-                dataReceived( fin,  jsonObject);
+                dataReceived(vin,  jsonObject);
         }
             
     }
+    /**
+    * Overrides {@code requestReceived} of {@code RequestReceived} 
+    * interface.
+    * 
+    * It evaluates the Function-Name field in the JsonObject and calls the 
+    * respective methods to process the information.
+    * @param sessionID      a string holding the UUID of the user session 
+    * @param jsonObject     a JsonObject with request transmitted by the 
+    * client/user
+    */
     @Override public void requestReceived(String sessionID, JsonObject jsonObject){
         switch (jsonObject.getString("functionName")) {
             case "transmitData":
@@ -95,14 +149,14 @@ public class EventEvaluation implements VehicleDataReceived, ClientRequestReceiv
     private void dataReceived(String fin, JsonObject jsonObject){
         JsonArray dataPoints = jsonObject.getJsonArray("Data-Points");
         JsonArray dataValues = jsonObject.getJsonArray("Data-Values");
-        System.out.println("Test");
-        for (JsonValue dataPoint:dataPoints){
-            System.out.println(dataPoint);
-            
-        }
-        for (JsonValue dataValue:dataValues){
-            System.out.println(dataValue);
-            
-        }
+//        System.out.println("Test");
+//        for (JsonValue dataPoint:dataPoints){
+//            System.out.println(dataPoint);
+//            
+//        }
+//        for (JsonValue dataValue:dataValues){
+//            System.out.println(dataValue);
+//            
+//        }
     }
 }

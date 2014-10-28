@@ -11,11 +11,29 @@ import java.sql.PreparedStatement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
- *
- * @author alexander
+ * The {@code DatabaseConnection} class connections to the database. And
+ * wraps methods enter information into the database and read information
+ * from the database
+ * 
+ * @author Alexander Forell
  */
 public class DatabaseConnection {
-    Connection conn;
+    /**
+    * Field which holds the vehicle connection
+    */
+    private Connection conn;
+    
+    /**
+    * Costructs the database connection and strores it into the field conn;
+    * 
+    * @param    dbServerName    a string for the IP Adress of the database server
+    * @param    dbServerPort    an integer specifying the port the database 
+    * server is listening
+    * @param    dbScheme        a string specifying the database scheme 
+    * which is used to store information
+    * @param    dbUserName      a string with the username for the database user
+    * @param    dbPassword      a string with the password for the database user 
+    */
     DatabaseConnection(String dbServerName, int dbServerPort, String dbScheme, String dbUserName, String dbPassword){
         try {
             // Der Aufruf von newInstance() ist ein Workaround
@@ -32,17 +50,25 @@ public class DatabaseConnection {
         } 
         catch (SQLException ex) {
             // Fehler behandeln
-            System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
+            System.err.println("SQLException: " + ex.getMessage());
+            System.err.println("SQLState: " + ex.getSQLState());
+            System.err.println("VendorError: " + ex.getErrorCode());
             System.exit(-1);
         }
     }
     
-    String getVehicleVIN(String VIN){
-        return "TEST";
-    }
-    public void storeData(String fin, Long FunctionCode, Long FunctionValue){
+    /**
+    * Stores vin, code of the diagnosis item and corresponding values into 
+    * the database.
+    * 
+    * @param    vin             a string for the IP Adress of the database 
+    * server
+    * @param    FunctionCode    HEX of the code of the stored diagnosis 
+    * information
+    * @param    FunctionValue   HEX of the value of the value of the stored 
+    * diagnosis inforamtion 
+    */
+    public void storeData(String vin, Long FunctionCode, Long FunctionValue){
         String query = "insert into receiveddata (functionCode, data, fin)"
         + " values (?, ?, ?)";
         
@@ -50,13 +76,19 @@ public class DatabaseConnection {
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.setLong(1, FunctionCode);
             preparedStmt.setLong(2, FunctionValue);
-            preparedStmt.setString(3, fin);
+            preparedStmt.setString(3, vin);
             preparedStmt.execute();
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
+    /**
+    * Enters a new client login and password into the database
+    * 
+    * @param    userName    string holding the username
+    * @param    password    string holding the password for the user
+    */
     public void createUser(String userName, String password){
          String query = "insert into users (username, password)"
         + " values (?, ?)";
@@ -70,6 +102,12 @@ public class DatabaseConnection {
         }
 
     }
+    
+    /**
+    * Deletes a client login from the database
+    * 
+    * @param    userName    string holding the username
+    */
     public void deleteUser(String userName){
          String query = "delete from users where username =?";
         try {

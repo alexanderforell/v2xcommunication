@@ -2,28 +2,68 @@
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
+ *
  */
 package v2gcommunication.server;
 
 import java.io.*;
 
 /**
- *
- * @author Alexander Forell
+ * The {@code Configuration} class wraps fields to configure the server. 
  * 
- * Class reads and stores Configuration parameters
+ * the class constructor loads parameters for the server configuration, such as
+ * the port listening for incoming vehicle connection, the port for incoming
+ * user connections, and the parameters to connect to the database
+ * 
+ * @author Alexander Forell
  * 
  */
 public class Configuration {
+    /**
+    * Field which holds the port for incoming vehicle connections
+    */
     private int portVehicleCommunication;
+    
+    /**
+    * Field which holds the port for incoming user connections
+    */
     private int portUserCommunication;
+    
+    /**
+    * Field which holds the IP-Adress of the database server
+    */
     private String databaseServer;
+    
+    /**
+    * Field which holds listening port of the database server
+    */
     private int databasePort;
+    
+    /**
+    * Field which holds database scheme
+    */
     private String databaseScheme;
+    
+    /**
+    * Field which holds database username
+    */
     private String databaseUserName;
+    
+    /**
+    * Field which holds password of the database user
+    */
     private String databasePassword;
     /**
-     * Constructor read File ServerConfig.txt and stores the class attributes
+     * Constructor reads file ServerConfig.txt and tries stores the fields
+     * <p>{@code portVehicleCommunication}
+     * <p>{@code portUserCommunication}
+     * <p>{@code databaseServer}
+     * <p>{@code databasePort}
+     * <p>{@code databaseScheme}
+     * <p>{@code databaseUserName}
+     * <p>{@code databasePassword}
+     * 
+     * @author Alexander Forell
      */
     Configuration(){
         int i = 1;
@@ -67,31 +107,68 @@ public class Configuration {
         }
     }
     /**
+     * Returns an {@code Integer} containing the port opened for incoming 
+     * vehicle connections
      * 
-     * @return Returns vehicle communication port 
+     * @return vehicle communication port 
      */
     int getPortVehicleCommunication(){
         return portVehicleCommunication; 
     }
     /**
+     * Returns an {@code Integer} containing the port opened for incoming 
+     * user connections
      * 
-     * @return Returns user communication port 
+     * @return user communication port 
      */
     int getPortUserCommunication(){
         return portUserCommunication; 
     }
+    
+    /**
+     * Returns a {@code String} containing the IP-adress of the database server
+     * 
+     * @return IP-adress of database server
+     */
     String databaseServer(){
         return databaseServer; 
     }
+    
+    /**
+     * Returns an {@code Integer} containing the port the database server is
+     * listening for incoming connections
+     * 
+     * @return database connection port
+     */
     int databasePort(){
         return databasePort; 
     }
+    
+    /**
+     * Returns a {@code String} containing the name of the database scheme 
+     * used for the v2gcommunication server
+     * 
+     * @return name of database scheme
+     */
     String databaseScheme(){
         return databaseScheme; 
     }
+    
+    /**
+     * Returns a {@code String} containing the username to logon to the 
+     * database server
+     * 
+     * @return database username
+     */
     String databaseUserName(){
         return databaseUserName; 
     }
+    
+    /**
+     * Returns a {@code String} containing the password of the database user
+     * 
+     * @return database user password
+     */
     String databasePassword(){
         return databasePassword; 
     }

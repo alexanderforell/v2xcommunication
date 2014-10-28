@@ -4,9 +4,6 @@
  * and open the template in the editor.
  */
 package v2gcommunication.server;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.BufferedReader;
 import java.io.StringReader;
 import java.net.*;
 import java.util.*;
@@ -33,26 +30,30 @@ public class VehicleConnection extends Thread {
         
     }
     @Override public void run() {
-        try {
-            BufferedReader in =
-                new BufferedReader(
-                    new InputStreamReader(socket.getInputStream()));
-            String strData;
-            while ((strData = in.readLine())!=null){ 
-                JsonReader jsonReader = Json.createReader( new StringReader(strData));
+            while (true){
+                String message ="";
+                try {
+                    message = CypheredReadWrite.readDES(socket.getInputStream(),"01234567");
+                } catch (Exception ex) {
+                    Logger.getLogger(VehicleConnection.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(VehicleConnection.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println("Message: " + message);
+                JsonReader jsonReader = Json.createReader( new StringReader(message));
                 JsonObject jsonData = jsonReader.readObject();
                 for (VehicleDataReceived li1:listener) {
-                   System.out.println(jsonData.toString());
                    li1.vehicleDataReceived(fin, jsonData);
                }
             }
-        } catch (IOException ex) {
-            Logger.getLogger(UserConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
     }
-    public void addListener(VehicleDataReceived dataReceived){
-        listener.add(dataReceived);
+    public void addListener(VehicleDataReceived vehicleDataReceived){
+        listener.add(vehicleDataReceived);
     }
     
 }
