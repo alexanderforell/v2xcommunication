@@ -16,7 +16,7 @@ import javax.json.*;
  * @author alexander
  */
 public class ServerConnection extends Thread{
-    Socket socket;
+    static Socket socket;
     PrintWriter out;
     ServerConnection(Socket socket){
         super("ServerConnection");
