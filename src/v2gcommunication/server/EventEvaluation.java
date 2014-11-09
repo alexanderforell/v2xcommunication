@@ -70,11 +70,14 @@ public class EventEvaluation implements VehicleDataReceived, ClientRequestReceiv
     * @param jsonObject a JsonObject with the message
     */
     @Override public void vehicleDataReceived(String vin, JsonObject jsonObject){
+        /*
         switch (jsonObject.getString("Function-Name")) {
             case "transmitData":
                 dataReceived(vin,  jsonObject);
         }
             
+        */
+        dataReceived(vin,  jsonObject);
     }
     /**
     * Overrides {@code requestReceived} of {@code RequestReceived} 
@@ -87,6 +90,7 @@ public class EventEvaluation implements VehicleDataReceived, ClientRequestReceiv
     * client/user
     */
     @Override public void requestReceived(String sessionID, JsonObject jsonObject){
+        /*
         switch (jsonObject.getString("functionName")) {
             case "transmitData":
                 
@@ -144,6 +148,7 @@ public class EventEvaluation implements VehicleDataReceived, ClientRequestReceiv
                 break;
             
         }
+                */
     }
     
     private void dataReceived(String fin, JsonObject jsonObject){

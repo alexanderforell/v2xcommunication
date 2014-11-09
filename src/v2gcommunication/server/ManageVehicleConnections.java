@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @author alexander
  */
 public class ManageVehicleConnections implements ConnectionList{
-    ArrayList<VehicleConnection> vehicleConnection = new ArrayList<>();
+    ArrayList<VehicleConnection> vehicleConnection = new ArrayList<VehicleConnection>();
     
     @Override public void newConnection(Socket socket, EventEvaluation listener){
         this.vehicleConnection.add(new VehicleConnection(socket, listener));

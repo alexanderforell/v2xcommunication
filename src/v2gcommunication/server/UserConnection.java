@@ -30,7 +30,7 @@ public class UserConnection extends Thread {
     public UserConnection(Socket socket, EventEvaluation listener) {
         super("UserConnection");
         this.socket = socket;
-        this.listener = new ArrayList <>();
+        this.listener = new ArrayList <ClientRequestReceived>();
         this.listener.add(listener);
         UUID seesionID = UUID.randomUUID();
         this.sessionID = seesionID.toString();

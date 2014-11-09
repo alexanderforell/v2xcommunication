@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @author alexander
  */
 public class ManageUserConnections implements ConnectionList{
-     ArrayList<UserConnection> userConnection = new ArrayList<>();
+     ArrayList<UserConnection> userConnection = new ArrayList<UserConnection>();
     
     @Override public void newConnection(Socket socket,EventEvaluation listener){
         this.userConnection.add(new UserConnection(socket,listener)) ;
