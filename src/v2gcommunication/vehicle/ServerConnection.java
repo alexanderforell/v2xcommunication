@@ -29,7 +29,7 @@ public class ServerConnection extends Thread{
     private Socket socket;
     private TransmitProtocol out;
     private ReceiveProtocol in;
-     List <DataReceived> listener;
+    List <DataReceived> listener;
      
     ServerConnection(EventEvaluation listener){
         try {

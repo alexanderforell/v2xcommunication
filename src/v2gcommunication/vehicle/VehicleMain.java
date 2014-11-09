@@ -19,20 +19,24 @@ public class VehicleMain{
     public static void main(String[] args) {
         EventEvaluation eventEval= new EventEvaluation();
         ServerConnection conn = new ServerConnection(eventEval);
-        int i = 0;
+        long i = 0;
         conn.start();
-        while (i<1){
+        while (i<10000){
             Date currentTime = new Date();
             SimpleDateFormat formatter = new SimpleDateFormat ("yyyy.MM.dd 'at' HH:mm:ss.SSS");
             JsonObject transmit;
             JsonObjectBuilder message = Json.createObjectBuilder();
             JsonArrayBuilder dataCodes = Json.createArrayBuilder();
             JsonArrayBuilder dataValues = Json.createArrayBuilder();
-            dataCodes.add(Integer.toHexString(i));
-            dataValues.add(formatter.format(currentTime));
-            message.add("Function-Name", "transmitData");
-            message.add("Data-Points",dataCodes);
-            message.add("Data-Values",dataValues);
+            dataCodes.add(Long.toHexString(i));
+            dataValues.add(Long.toHexString(100 + i));
+            dataCodes.add(Long.toHexString(i + 2));
+            dataValues.add(Long.toHexString(100 + i));
+            dataCodes.add(Long.toHexString(i + 4));
+            dataValues.add(Long.toHexString(100 + i));
+            message.add("functionName", "transmitData");
+            message.add("dataPoints", dataCodes);
+            message.add("dataValues", dataValues);
             transmit = message.build();
             System.out.println(transmit.toString());
             conn.transmitMessage(transmit.toString().getBytes());
