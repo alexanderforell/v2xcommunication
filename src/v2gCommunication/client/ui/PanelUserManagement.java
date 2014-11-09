@@ -5,6 +5,8 @@
  */
 package v2gCommunication.client.ui;
 
+import v2gCommunication.client.ClientMethods;
+
 /**
  *
  * @author alexander
@@ -47,18 +49,28 @@ public class PanelUserManagement extends javax.swing.JPanel {
         jLabelUserIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v2gCommunication/client/icons/user3.png"))); // NOI18N
 
         jButtonAddAccount.setText("Add Account");
+        jButtonAddAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAddAccountActionPerformed(evt);
+            }
+        });
 
         jButtonDeleteAccount.setText("Delete");
+        jButtonDeleteAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDeleteAccountActionPerformed(evt);
+            }
+        });
 
         jButtonAlppy.setText("Apply");
+        jButtonAlppy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAlppyActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("User Accounts");
 
-        jListUsers.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(jListUsers);
 
         javax.swing.GroupLayout jPanelUserListLayout = new javax.swing.GroupLayout(jPanelUserList);
@@ -66,7 +78,7 @@ public class PanelUserManagement extends javax.swing.JPanel {
         jPanelUserListLayout.setHorizontalGroup(
             jPanelUserListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         jPanelUserListLayout.setVerticalGroup(
             jPanelUserListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,6 +131,18 @@ public class PanelUserManagement extends javax.swing.JPanel {
         getAccessibleContext().setAccessibleName("User Management");
         getAccessibleContext().setAccessibleDescription("User Management");
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonAlppyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlppyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonAlppyActionPerformed
+
+    private void jButtonAddAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddAccountActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonAddAccountActionPerformed
+
+    private void jButtonDeleteAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteAccountActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonDeleteAccountActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

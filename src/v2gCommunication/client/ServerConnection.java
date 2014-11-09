@@ -8,39 +8,59 @@ package v2gCommunication.client;
 
 import java.net.*;
 import java.io.*;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.json.*;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import v2gCommunication.client.interfaces.DataReceived;
+import v2gcommunication.commonclasses.DESDecode;
+import v2gcommunication.commonclasses.DESEncode;
+import v2gcommunication.commonclasses.ReceiveProtocol;
+import v2gcommunication.commonclasses.TransmitProtocol;
 /**
  *
  * @author alexander
  */
 public class ServerConnection extends Thread{
-    static Socket socket;
-    PrintWriter out;
-    ServerConnection(Socket socket){
-        super("ServerConnection");
-        this.socket = socket;
+    private Socket socket;
+    private TransmitProtocol out;
+    private ReceiveProtocol in;
+    List <DataReceived> listener;
+    
+    public ServerConnection(int port, DataReceived li){
         try {
-            out = new PrintWriter(socket.getOutputStream(), true);
+            socket = new Socket("localhost",port);
+            DESEncode cEnc = new DESEncode();
+            cEnc.initializeCipher();
+            out = new TransmitProtocol(socket.getOutputStream(), cEnc);
+            DESDecode cDec = new DESDecode();
+            cDec.initializeCipher();
+            in = new ReceiveProtocol(socket.getInputStream(), cDec); 
+            listener.add(li);
         } catch (IOException ex) {
             Logger.getLogger(ServerConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
     @Override public void run() {
-        try {
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(socket.getInputStream()));
-            while ((in.readLine()) != null) {
-                System.out.println("Listening, but doint nothing.");
+        StringBuffer message = new StringBuffer();
+        StringBuffer messageType = new StringBuffer();
+        while (true) {
+            in.readMessage(message, messageType);
+            if ("JSON".equals(messageType.toString())) {
+                JsonReader jsonReader = Json.createReader( new StringReader(message.toString()));
+                JsonObject jsonData = jsonReader.readObject();
+                System.out.println(jsonData.toString());
+                for (DataReceived li1:listener) li1.dataReceived(jsonData);
             }
-        } catch (IOException ex) {
-            System.out.println("Connection to Server not possible");
-        }
+            message.delete(0, message.length());
+            messageType.delete(0, messageType.length());   
+        } 
     }
-    public void transmitData(JsonObject data){
-        
-        
-        out.println(data.toString());
+    public void transmitData(byte[] message){
+        out.writeMessage(message, "JSON".getBytes());
+      
     }
 }

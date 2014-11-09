@@ -9,26 +9,54 @@ import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import v2gCommunication.client.interfaces.DataReceived;
 
 /**
  *
  * @author alexander
  */
-public class ClientMethods{
+public class ClientMethods implements DataReceived{
+    
+    static ServerConnection conn;
+    
+    public ClientMethods(int port){
+        this.conn = new ServerConnection(port, this);
+        this.conn.start();
+    }
+    
+    @Override
+    public void dataReceived(JsonObject jsonObject) {
+        switch (jsonObject.getString("functionName")) {
+            case "logon":
+                break;
+            case "createUser":
+                break;
+            case "changePassword":
+                break;
+            case "deleteUser":
+                break;
+            case "logoff":
+                break;
+            case "getUserRights":
+                break;
+        }
+    }
     
     
-    static public void logon (ServerConnection conn,String userName, String passWord){
+    public static void logon (String userName, String passWord){
         UUID reQuestID = UUID.randomUUID();
         JsonObject transmit;
         JsonObjectBuilder message = Json.createObjectBuilder();
         JsonArrayBuilder parameters = Json.createArrayBuilder();
-        message.add("Function-Name", "logon");
+        message.add("functionName", "logon");
         message.add("Request-ID", reQuestID.toString());
         parameters.add(userName).add(passWord);       
         message.add("Parameters",parameters);
         transmit = message.build();
+        conn.transmitData(transmit.toString().getBytes());
+        
     }
-    static public void createUser(ServerConnection conn,String userName, String password){
+    public static void createUser(String userName, String password){
         UUID reQuestID = UUID.randomUUID();
         JsonObject transmit;
         JsonObjectBuilder message = Json.createObjectBuilder();
@@ -37,22 +65,21 @@ public class ClientMethods{
         message.add("userName", userName);
         message.add("password", password);
         transmit = message.build();
-        conn.transmitData(transmit);
-        
+        conn.transmitData(transmit.toString().getBytes());
     }
-    static public void changePassword(ServerConnection conn, String userName, String passwordOld, String passwordNew){
+    public static void changePassword(String userName, String passwordOld, String passwordNew){
         UUID reQuestID = UUID.randomUUID();
         JsonObject transmit;
         JsonObjectBuilder message = Json.createObjectBuilder();
-        message.add("functionName", "createUser");
+        message.add("functionName", "changePassword");
         message.add("requestId", reQuestID.toString());
         message.add("userName", userName);
         message.add("passwordOld", passwordOld);
         message.add("passwordNew", passwordNew);
         transmit = message.build();
-        conn.transmitData(transmit);
+        conn.transmitData(transmit.toString().getBytes());
     }
-    static public void deleteUser(ServerConnection conn,String userName){
+    public static void deleteUser(String userName){
         UUID reQuestID = UUID.randomUUID();
         JsonObject transmit;
         JsonObjectBuilder message = Json.createObjectBuilder();
@@ -60,140 +87,158 @@ public class ClientMethods{
         message.add("requestId", reQuestID.toString());
         message.add("userName", userName);
         transmit = message.build();
-        conn.transmitData(transmit);
+        conn.transmitData(transmit.toString().getBytes());
     }
-    static public void logoff (ServerConnection conn, String userName){
+    public static void logoff (String userName){
         UUID reQuestID = UUID.randomUUID();
         JsonObject transmit;
         JsonObjectBuilder message = Json.createObjectBuilder();
-        message.add("functionName", "createUser");
+        message.add("functionName", "logoff");
         message.add("requestId", reQuestID.toString());
         message.add("userName", userName);
         transmit = message.build();
-        conn.transmitData(transmit);
+        conn.transmitData(transmit.toString().getBytes());
     }
-    static public void getUserRights(ServerConnection conn, String userName){
+    public static void getUsers(){
         UUID reQuestID = UUID.randomUUID();
         JsonObject transmit;
         JsonObjectBuilder message = Json.createObjectBuilder();
-        message.add("functionName", "createUser");
+        message.add("functionName", "getUsers");
+        message.add("requestId", reQuestID.toString());
+        transmit = message.build();
+        conn.transmitData(transmit.toString().getBytes());
+    }
+    public static void getUserRights(String userName){
+        UUID reQuestID = UUID.randomUUID();
+        JsonObject transmit;
+        JsonObjectBuilder message = Json.createObjectBuilder();
+        message.add("functionName", "getUserRights");
         message.add("requestId", reQuestID.toString());
         message.add("userName", userName);
         transmit = message.build();
-        conn.transmitData(transmit);
+        conn.transmitData(transmit.toString().getBytes());
     }
-    static public void addVehicle(ServerConnection conn, String vin){
+    public static void addVehicle(String vin){
         UUID reQuestID = UUID.randomUUID();
         JsonObject transmit;
         JsonObjectBuilder message = Json.createObjectBuilder();
         JsonArrayBuilder parameters = Json.createArrayBuilder();
-        message.add("Function-Name", "addVehicle");
+        message.add("functionName", "addVehicle");
         message.add("Request-ID", reQuestID.toString());
         parameters.add(vin);       
         message.add("Parameters",parameters);
         transmit = message.build();
+        conn.transmitData(transmit.toString().getBytes());
     }
 
-    static public void deleteVehicle(ServerConnection conn, String vin){
+    public static void deleteVehicle(String vin){
         UUID reQuestID = UUID.randomUUID();
         JsonObject transmit;
         JsonObjectBuilder message = Json.createObjectBuilder();
         JsonArrayBuilder parameters = Json.createArrayBuilder();
-        message.add("Function-Name", "addVehicle");
+        message.add("functionName", "addVehicle");
         message.add("Request-ID", reQuestID.toString());
         parameters.add(vin);       
         message.add("Parameters",parameters);
         transmit = message.build();
+        conn.transmitData(transmit.toString().getBytes());
     }
-    static public void getVehicles(ServerConnection conn){
+    static public void getVehicles(){
         UUID reQuestID = UUID.randomUUID();
         JsonObject transmit;
         JsonObjectBuilder message = Json.createObjectBuilder();
         JsonArrayBuilder parameters = Json.createArrayBuilder();
-        message.add("Function-Name", "getVehicles");
+        message.add("functionName", "getVehicles");
         message.add("Request-ID", reQuestID.toString());
         parameters.add("");       
         message.add("Parameters",parameters);
         transmit = message.build();
+        conn.transmitData(transmit.toString().getBytes());
     }
 
-    static public void getActiveVehicles(ServerConnection conn){
+    static public void getActiveVehicles(){
         UUID reQuestID = UUID.randomUUID();
         JsonObject transmit;
         JsonObjectBuilder message = Json.createObjectBuilder();
         JsonArrayBuilder parameters = Json.createArrayBuilder();
-        message.add("Function-Name", "getActiveVehicles");
+        message.add("functionName", "getActiveVehicles");
         message.add("Request-ID", reQuestID.toString());
         parameters.add("");       
         message.add("Parameters",parameters);
         transmit = message.build();
-            
+        conn.transmitData(transmit.toString().getBytes());
     }
-    static public void readData(ServerConnection conn){
+    static public void readData(){
         UUID reQuestID = UUID.randomUUID();
         JsonObject transmit;
         JsonObjectBuilder message = Json.createObjectBuilder();
         JsonArrayBuilder parameters = Json.createArrayBuilder();
-        message.add("Function-Name", "readData");
+        message.add("functionName", "readData");
         message.add("Request-ID", reQuestID.toString());
         parameters.add("");       
         message.add("Parameters",parameters);
         transmit = message.build();
+        conn.transmitData(transmit.toString().getBytes());
+    }
+    static public void readData(String vin){
+        UUID reQuestID = UUID.randomUUID();
+        JsonObject transmit;
+        JsonObjectBuilder message = Json.createObjectBuilder();
+        JsonArrayBuilder parameters = Json.createArrayBuilder();
+        message.add("functionName", "readData");
+        message.add("Request-ID", reQuestID.toString());
+        parameters.add("vin");       
+        message.add("Parameters",parameters);
+        transmit = message.build();
+        conn.transmitData(transmit.toString().getBytes());
+    }
+    static public void getSessions(){
+        UUID reQuestID = UUID.randomUUID();
+        JsonObject transmit;
+        JsonObjectBuilder message = Json.createObjectBuilder();
+        JsonArrayBuilder parameters = Json.createArrayBuilder();
+        message.add("functionName", "getSessions");
+        message.add("Request-ID", reQuestID.toString());
+        parameters.add("");       
+        message.add("Parameters",parameters);
+        transmit = message.build();
+        conn.transmitData(transmit.toString().getBytes());
+    }
+    static public void getSessions(String vin){
+        UUID reQuestID = UUID.randomUUID();
+        JsonObject transmit;
+        JsonObjectBuilder message = Json.createObjectBuilder();
+        JsonArrayBuilder parameters = Json.createArrayBuilder();
+        message.add("functionName", "getSessions");
+        message.add("Request-ID", reQuestID.toString());
+        parameters.add("vin");       
+        message.add("Parameters",parameters);
+        transmit = message.build();
+        conn.transmitData(transmit.toString().getBytes());
+    }
+    static public void requestData(String[] request, String vin){
+        UUID reQuestID = UUID.randomUUID();
+        JsonObject transmit;
+        JsonObjectBuilder message = Json.createObjectBuilder();
+        JsonArrayBuilder parameters = Json.createArrayBuilder();
+        message.add("functionName", "getSessions");
+        message.add("Request-ID", reQuestID.toString());
+        parameters.add("vin");       
+        message.add("Parameters",parameters);
+        transmit = message.build();
+        conn.transmitData(transmit.toString().getBytes());
+    }
+    static public void requestData(String[] request){
+        
+    }
+    static public void schduleDataRequest(String[] request, String vin, Long intervall){
+        
+    }
+    static public void schduleDataRequest(String[] request, Long intervall){
+        
+    }
 
-    }
-    static public void readData(ServerConnection conn, String vin){
-        UUID reQuestID = UUID.randomUUID();
-        JsonObject transmit;
-        JsonObjectBuilder message = Json.createObjectBuilder();
-        JsonArrayBuilder parameters = Json.createArrayBuilder();
-        message.add("Function-Name", "readData");
-        message.add("Request-ID", reQuestID.toString());
-        parameters.add("vin");       
-        message.add("Parameters",parameters);
-        transmit = message.build();
-    }
-    static public void getSessions(ServerConnection conn){
-        UUID reQuestID = UUID.randomUUID();
-        JsonObject transmit;
-        JsonObjectBuilder message = Json.createObjectBuilder();
-        JsonArrayBuilder parameters = Json.createArrayBuilder();
-        message.add("Function-Name", "getSessions");
-        message.add("Request-ID", reQuestID.toString());
-        parameters.add("");       
-        message.add("Parameters",parameters);
-        transmit = message.build();
-    }
-    static public void getSessions(ServerConnection conn, String vin){
-        UUID reQuestID = UUID.randomUUID();
-        JsonObject transmit;
-        JsonObjectBuilder message = Json.createObjectBuilder();
-        JsonArrayBuilder parameters = Json.createArrayBuilder();
-        message.add("Function-Name", "getSessions");
-        message.add("Request-ID", reQuestID.toString());
-        parameters.add("vin");       
-        message.add("Parameters",parameters);
-        transmit = message.build();
-    }
-    static public void requestData(ServerConnection conn, String[] request, String vin){
-        UUID reQuestID = UUID.randomUUID();
-        JsonObject transmit;
-        JsonObjectBuilder message = Json.createObjectBuilder();
-        JsonArrayBuilder parameters = Json.createArrayBuilder();
-        message.add("Function-Name", "getSessions");
-        message.add("Request-ID", reQuestID.toString());
-        parameters.add("vin");       
-        message.add("Parameters",parameters);
-        transmit = message.build();
-    }
-    static public void requestData(ServerConnection conn, String[] request){
-        
-    }
-    static public void schduleDataRequest(ServerConnection conn, String[] request, String vin, Long intervall){
-        
-    }
-    static public void schduleDataRequest(ServerConnection conn, String[] request, Long intervall){
-        
-    }
+    
    
     
 }

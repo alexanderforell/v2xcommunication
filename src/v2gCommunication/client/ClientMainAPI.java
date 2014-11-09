@@ -12,7 +12,8 @@ import v2gCommunication.client.ui.*;
  * @author alexander
  */
 public class ClientMainAPI extends javax.swing.JFrame {
-
+    private String userName;
+    
     /**
      * Creates new form ClientMainAPI
      */
@@ -119,8 +120,9 @@ public class ClientMainAPI extends javax.swing.JFrame {
         loginDialog.setVisible(true);
         if(loginDialog.loginDataEntered()){
             // add method check login credentials
-            System.out.println("Username: "+loginDialog.getUserName());
-            System.out.println("Username: "+loginDialog.getPassword());
+            userName = loginDialog.getName();
+            ClientMethods.logon(loginDialog.getName(), loginDialog.getPassword());
+            ClientMethods.getUserRights(loginDialog.getName());
             this.jLabelLoginInfo.setText("Connected");
             jTabbedPaneMainContent.addTab("User Management", panelUserManagement);
             jTabbedPaneMainContent.addTab("Vehicle Management", panelVehicleManagement);
@@ -130,11 +132,12 @@ public class ClientMainAPI extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemLogonActionPerformed
 
     private void jMenuItemLogoffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLogoffActionPerformed
-                // TODO add your handling code here:
+        // TODO add your handling code here:
+        ClientMethods.logoff(userName);
         this.jLabelLoginInfo.setText("Not Connected");
         jTabbedPaneMainContent.remove(panelUserManagement);
-            jTabbedPaneMainContent.remove(panelVehicleManagement);
-            jTabbedPaneMainContent.remove(dataAccess);
+        jTabbedPaneMainContent.remove(panelVehicleManagement);
+        jTabbedPaneMainContent.remove(dataAccess);
         
     }//GEN-LAST:event_jMenuItemLogoffActionPerformed
 

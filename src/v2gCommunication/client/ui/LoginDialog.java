@@ -5,6 +5,8 @@
  */
 package v2gCommunication.client.ui;
 
+import v2gCommunication.client.ClientMethods;
+
 /**
  *
  * @author alexander
@@ -20,6 +22,7 @@ public class LoginDialog extends javax.swing.JDialog {
     public LoginDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
     }
 
     /**
@@ -50,6 +53,11 @@ public class LoginDialog extends javax.swing.JDialog {
         jButtonLogon.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 jButtonLogonMousePressed(evt);
+            }
+        });
+        jButtonLogon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLogonActionPerformed(evt);
             }
         });
 
@@ -148,6 +156,10 @@ public class LoginDialog extends javax.swing.JDialog {
         detailsProvided=true;
         this.setVisible(false);
     }//GEN-LAST:event_jButtonCancelMousePressed
+
+    private void jButtonLogonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonLogonActionPerformed
 
     /**
      * @param args the command line arguments
