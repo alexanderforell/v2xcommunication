@@ -527,6 +527,11 @@ public class Session implements GetTasks, NewTransmitTask, DataAdded, AddRequest
                 lockTransmitList.lock();
                 try {
                     while(noData() && socketAvailable && transmitRequest.isEmpty()){
+                        /**
+                        * await() causes unlock of the object. signal() locks 
+                        * the the object again, and causes continous the code.
+                        * Finally unlocks the list again.
+                        */
                         dataToTransmit.await();
                     }
                 } catch (InterruptedException ex) {
@@ -652,6 +657,14 @@ public class Session implements GetTasks, NewTransmitTask, DataAdded, AddRequest
                      * IOException will be thrown if socket is not available anymore
                      * it will set socketAvailable == false and signal transmit 
                      * side so that the thread can quit its operation as well.
+                     * 
+                     * Receive side always crahses first. It is always working 
+                     * on the connection sender side might be waiting for data 
+                     * and does therefor not realize that the session has 
+                     * crashed.
+                     *  
+                     * reading data or waiting for data.
+                     * 
                      */
                     socketAvailable = false;
                     lockTransmitList.lock();
